@@ -21,8 +21,8 @@ public class ShipSkills extends ShipData{
 		importJSON();
 		skillList();
 		mapSkills();
-		printMap2();
-		System.out.println(weaponList.toString());
+		printMap();
+		System.out.println("WeaponIDs: " +weaponList.toString());
 	}
 
 	public void importJSON(){
@@ -145,44 +145,6 @@ public class ShipSkills extends ShipData{
 	}
 
 	private void printMap() {
-		for(int i = 0; i < skillList.length(); i++) {
-			String temp;
-			String skill = "buff_"+skillList.getInt(i);
-			ArrayList<String> list;
-			ArrayList<String> r = new ArrayList<String>();
-			System.out.print("Skill "+(i+1)+": " + skill);
-			while(skillMap.containsKey(skill)) {
-				list = skillMap.get(skill);
-				temp = list.remove(0);
-				System.out.print(" -> " +temp);
-				if(!list.isEmpty()) {
-					skillMap.put(skill, list);
-					r.add(skill);
-					if(skillMap.containsKey(temp)) {
-						skill = temp;
-					}else {
-						skill=r.remove(0);
-						System.out.println("");
-						System.out.print("\t "+skill);
-					}
-				}
-				else if(list.isEmpty()){
-					skillMap.remove(skill);
-					if(!r.isEmpty()) {
-						skillMap.remove(skill);
-						skill=r.remove(0);
-						System.out.println("");
-						System.out.print("\t "+skill);
-					}else {
-						skill=temp;
-					}
-
-				}
-
-			}
-		}
-	}
-	private void printMap2() {
 		for(int i = 0; i < skillList.length(); i++) {
 			String temp;
 			String skill = "buff_"+skillList.getInt(i);

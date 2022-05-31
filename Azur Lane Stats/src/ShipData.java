@@ -16,8 +16,6 @@ public class ShipData {
 	 * imports json files to jsonobjects
 	 */
 	public void importFiles() {
-		
-
 		try {
 			shipStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\ship_data_statistics.json")));
 			//weaponStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\weapon_property.json")));
