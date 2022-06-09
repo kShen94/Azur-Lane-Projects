@@ -19,6 +19,7 @@ public class Bullets {
 	int velocity;
 	JSONObject bulletStats;
 	int antisub;
+	boolean ignoreShield;
 	
 	public Bullets(int bulletid) {
 		bulletID = bulletid;
@@ -58,6 +59,7 @@ public class Bullets {
 		JSONObject bullet = bulletStats.getJSONObject(bulletID+"");
 		getAmmoType(bullet.getInt("ammo_type"));
 		checkBuff(bullet.getJSONArray("attach_buff"));
+		checkParams(bullet.optJSONObject("extra_param"));
 		antisub = bullet.getInt("antisub_enhancement");
 		getAmmoMods(bullet.getJSONArray("damage_type"));
 		getExtras(bullet.optJSONObject("extra_param"));
@@ -102,6 +104,14 @@ public class Bullets {
 			buffID = buff.getJSONObject(0).getInt("buff_id");
 		}else
 			buffID = 0;
+	}
+	private void checkParams(JSONObject param) {
+		if(param == null)
+			ignoreShield= false;
+		else if(!param.isEmpty()) {
+			ignoreShield = param.optBoolean("ignoreShield", false);
+		}else
+			ignoreShield= false;
 	}
 	private void getAmmoType(int ammo) {
 		switch(ammo) {

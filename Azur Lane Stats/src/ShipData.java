@@ -57,7 +57,6 @@ public class ShipData {
 			if(key.endsWith("4") && !key.startsWith("9")) {
 				if(shipStats.getJSONObject(key).getString("english_name").toLowerCase().contains(shipName.toLowerCase()))
 					return (shipTemplate.getJSONObject(key).getInt("group_type")+ "4");
-					
 			}
 		}
 		return null;
@@ -67,5 +66,6 @@ public class ShipData {
 	public JSONObject getShipByID (String id) {
 		return shipStats.getJSONObject(id);
 	}
+	
 }
 

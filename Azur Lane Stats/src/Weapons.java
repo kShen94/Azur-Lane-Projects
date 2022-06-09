@@ -23,6 +23,10 @@ public class Weapons {
 	JSONArray bulletArray;
 	String dir = System.getProperty("user.dir");
 	int damage;
+	int coeff;
+	int attr;
+	int attrRatio;
+	String scaling;
 	JSONObject baseWeapon;
 	HashMap<Integer,Bullets> map = new HashMap();
 	Stack<Integer> mapValues = new Stack();
@@ -65,7 +69,10 @@ public class Weapons {
 	
 	private void getGun() {
 		damage = weapon.getInt("damage");
-		
+		coeff = baseWeapon.getInt("corrected");
+		attr = baseWeapon.getInt("attack_attribute");
+		attrRatio = baseWeapon.getInt("attack_attribute_ratio");
+		getScaling(attr);
 		if(weapon.has("bullet_ID")) 
 			bulletArray = weapon.getJSONArray("bullet_ID");
 		if(weapon.has("barrage_ID"))
@@ -79,6 +86,25 @@ public class Weapons {
 		getBullets();
 	}
 	
+	private void getScaling(int attr) {
+		switch (attr) {
+		case(1):
+			scaling = "FP";
+			break;
+		case(2):
+			scaling = "TRP";
+			break;
+		case(3):
+			scaling = "AA";
+			break;
+		case(4):
+			scaling = "AVI";
+			break;
+		case(5):
+			scaling = "ASW";
+			break;
+		}
+	}
 	private void getBullets() {
 		int b;
 		for(int i = 0; i < bulletArray.length();i++) {
@@ -140,6 +166,8 @@ public class Weapons {
 			System.out.println("WeaponID: "+ weapon_id);
 			System.out.println( "BulletID: "+ b.bulletID);
 			System.out.println("Damage: " +damage);
+			System.out.println("Coefficient: " +coeff/100);
+			System.out.println("Scaling: " + attrRatio/100 +"x "+scaling);
 			System.out.println( "Bullet Count: " + b.bulletCount);
 			System.out.println( "Ammo Type : " + b.ammoType);
 			System.out.println( "Ammo Mods: " + b.light+ "/" +b.medium+ "/" + b.heavy);
@@ -155,6 +183,8 @@ public class Weapons {
 			System.out.println("Velocity: " + b.velocity);
 			if(b.antisub !=0)
 				System.out.println("antisub: " + b.antisub);
+			if(b.ignoreShield)
+				System.out.println("Ignore Shields");
 		}
 	}
 	
