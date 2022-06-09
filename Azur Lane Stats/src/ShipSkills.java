@@ -104,8 +104,6 @@ public class ShipSkills extends ShipData{
 				b = obj.getJSONObject("2").getJSONArray("effect_list");
 			}else
 				return;
-			//System.out.println("skill_"+skillID+ " : "+b);
-			//System.out.println(b.length());
 			for(int i = 0; i < b.length(); i++) {
 				JSONObject effect = b.getJSONObject(i);
 				if(effect.has("arg_list")) {

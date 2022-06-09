@@ -18,10 +18,6 @@ public class ShipData {
 	public void importFiles() {
 		try {
 			shipStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\ship_data_statistics.json")));
-			//weaponStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\weapon_property.json")));
-			//planeStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\aircraft_template.json")));
-			//barrageStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\barrage_template.json")));
-			//bulletStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\bullet_template.json")));
 			shipTemplate = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\ship_data_template.json")));
 		}catch (Exception e) {
 			e.printStackTrace();

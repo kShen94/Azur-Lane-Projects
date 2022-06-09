@@ -8,7 +8,7 @@ public class Main {
 		// TODO Auto-generated method stub
 
 		ShipStats s = new ShipStats();
-		String id = s.getShipID("unicorn", true);
+		String id = s.getShipID("ulrich", true);
 		LinkedList<String> weaponList;
 		//String id = "203104";
 		if(id != null) {

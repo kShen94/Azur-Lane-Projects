@@ -100,7 +100,8 @@ public class Bullets {
 	private void checkBuff(JSONArray buff) {
 		if(!buff.isEmpty()) {
 			buffID = buff.getJSONObject(0).getInt("buff_id");
-		}
+		}else
+			buffID = 0;
 	}
 	private void getAmmoType(int ammo) {
 		switch(ammo) {

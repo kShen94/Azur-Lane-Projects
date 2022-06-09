@@ -149,6 +149,8 @@ public class Weapons {
 				System.out.println("SpreadZ: " + b.offsetZ);
 			if(b.splash != 0)
 				System.out.println("Splash: "+ b.splash);
+			if(b.buffID != 0)
+				System.out.println("BuffID: "+b.buffID);
 			System.out.println("Pierce: " + b.pierce);
 			System.out.println("Velocity: " + b.velocity);
 			if(b.antisub !=0)

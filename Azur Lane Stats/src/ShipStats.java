@@ -114,7 +114,6 @@ public class ShipStats extends ShipData{
 		for(int i = 0; i < transList.length(); i++) {
 			innerList = transList.getJSONArray(i);
 			for(int j =0; j<innerList.length();j++) {
-				//System.out.println(innerList.getJSONArray(j).getInt(1));
 				transID.add(innerList.getJSONArray(j).getInt(1));
 			}
 		}
