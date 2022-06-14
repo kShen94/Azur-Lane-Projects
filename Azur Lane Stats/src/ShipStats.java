@@ -91,9 +91,13 @@ public class ShipStats extends ShipData{
 		return id;
 	}
 	
+	/**
+	 * checks whether the ship has a retrofit
+	 */
 	private void checkRetro() {
 		try {
 			shipTrans = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\ship_data_trans.json")));
+			//looks for matching groupID
 			if(shipTrans.has(groupID)) {
 				transData = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\transform_data_template.json")));
 				getRetroList();
@@ -119,21 +123,29 @@ public class ShipStats extends ShipData{
 		}
 	}
 	
+	/**
+	 * Stores all stat enhancements in transMap
+	 * Checks for new shipID
+	 */
 	private void getRetroStats() {
 		for(int t:transID) {
 			JSONArray shipid = transData.getJSONObject(t+"").getJSONArray("ship_id");
+			//checks if shipID changes
 			if(!shipid.isEmpty()) {
 				id = shipid.getJSONArray(0).getInt(1)+"";
-				System.out.println("ShipID : "+shipid.getJSONArray(0).getInt(1));
+				//System.out.println("ShipID : "+shipid.getJSONArray(0).getInt(1));
 			}
 			JSONArray effect = transData.getJSONObject(t+"").getJSONArray("effect");
+			//iterates through each object in effects
 			for(int i =0; i<effect.length();i++) {
 				Iterator<String> it = effect.getJSONObject(i).keys();
 				while(it.hasNext()) {
 					String k = it.next();
+					//adds stat -> value to map
 					if(!transMap.containsKey(k)) {
 						transMap.put(k, effect.getJSONObject(i).getDouble(k));
 					}
+					//if stat exists in map, adds to it
 					else {
 						transMap.put(k, effect.getJSONObject(i).getDouble(k)+transMap.get(k));
 					}
@@ -142,7 +154,11 @@ public class ShipStats extends ShipData{
 		}
 	}
 	
+	/**
+	 * Get weapon stats
+	 */
 	private void importGuns() {
+		//get gun mounts
 		JSONArray mounts = stats.getJSONArray("base_list");
 		fgm = mounts.getInt(0);
 		sgm = mounts.getInt(1);
@@ -177,6 +193,9 @@ public class ShipStats extends ShipData{
 		eff4 = (int)(eff.optDouble(3, 0)*100);
 	}
 	
+	/**
+	 * Get type of weapon for each slot
+	 */
 	private void getWeaponTypes() {
 		//get jsonarray of equips
 		JSONArray e1 = shipTemplate.getJSONObject(id).getJSONArray("equip_1");
@@ -205,6 +224,9 @@ public class ShipStats extends ShipData{
 		}
 	}
 	
+	/**
+	 * get preload counts
+	 */
 	private void countPreloads() {
 		JSONArray s = shipStats.getJSONObject(id).getJSONArray("preload_count");
 		preload1 = s.getInt(0);
@@ -212,6 +234,9 @@ public class ShipStats extends ShipData{
 		preload3 = s.getInt(2);
 	}
 	
+	/**
+	 * HashMap of key -> weaponType
+	 */
 	private void weaponMap() {
 		weaponType.put(1, "DD Gun");
 		weaponType.put(2, "CL Gun");
@@ -233,6 +258,9 @@ public class ShipStats extends ShipData{
 		weaponType.put(20, "Missile");				
 	}
 	
+	/**
+	 * Gets all ship stats and growth values
+	 */
 	private void importStats() {
 		JSONArray agrowth = stats.getJSONArray("attrs_growth");
 		JSONArray attrs = stats.getJSONArray("attrs");
@@ -259,12 +287,16 @@ public class ShipStats extends ShipData{
 		aswGrowth = agrowth.getInt(11);
 	}
 	
+	/**
+	 * gets all enhancement values
+	 */
 	private void importStrengthen() {
 		try {
 			JSONObject str = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\ship_data_strengthen.json")));
 			JSONArray a = str.getJSONObject(groupID).getJSONArray("durability");
 			fpStr = a.getInt(0);
 			trpStr = a.getInt(1);
+			
 			aviStr = a.getInt(3);
 			rldStr = a.getInt(4);
 		} catch (Exception e) {
@@ -272,6 +304,12 @@ public class ShipStats extends ShipData{
 		} 
 	}
 	
+	/**
+	 * Get affinity stat multiplier
+	 * 0-60 = 1, 61-80 = 1.01, 81-99 = 1.03, 100 = 1.06, 101 - 199 = 1.09, 200 = 1.12
+	 * @param aff
+	 * @return
+	 */
 	private float addAff(int aff){
 		if(aff == 200){
 			return 1.12f;

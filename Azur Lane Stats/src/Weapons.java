@@ -51,12 +51,16 @@ public class Weapons {
 		}
 	}
 	
+	/**
+	 * sets weaponid and baseweapon id if applicable
+	 */
 	private void checkWeapon() {
 		weapon = weaponStats.getJSONObject(weapon_id);
 		if(weapon.has("base"))
 			baseWeapon = weaponStats.getJSONObject(weapon.getInt("base")+"");
 		else
 			baseWeapon = weapon;
+		//type 10 and 11 are planes?
 		if(baseWeapon.getInt("type")== 10 || baseWeapon.getInt("type")== 11 ) {
 			getPlane();
 		}else
@@ -64,28 +68,36 @@ public class Weapons {
 	}
 	
 	private void getPlane() {
-		
+		//TODO
 	}
 	
+	/**
+	 * Gets gun stats
+	 */
 	private void getGun() {
 		damage = weapon.getInt("damage");
 		coeff = baseWeapon.getInt("corrected");
 		attr = baseWeapon.getInt("attack_attribute");
 		attrRatio = baseWeapon.getInt("attack_attribute_ratio");
 		getScaling(attr);
+		//if bulletID is in current weapon, use array, otherwise use baseWeapon
 		if(weapon.has("bullet_ID")) 
 			bulletArray = weapon.getJSONArray("bullet_ID");
+		else
+			bulletArray = baseWeapon.getJSONArray("bullet_ID");
+		//if barrageID is in current weapon, use array, otherwise use baseWeapon
 		if(weapon.has("barrage_ID"))
 			barrageArray = weapon.getJSONArray("barrage_ID");
-		
-		if(bulletArray == null) 
-			bulletArray = baseWeapon.getJSONArray("bullet_ID");
-		if(barrageArray == null) 
+		else
 			barrageArray = baseWeapon.getJSONArray("barrage_ID");
-		
+			
 		getBullets();
 	}
 	
+	/**
+	 * Gets weapon stat scaling
+	 * @param attr
+	 */
 	private void getScaling(int attr) {
 		switch (attr) {
 		case(1):
@@ -105,30 +117,42 @@ public class Weapons {
 			break;
 		}
 	}
+	
+	/**
+	 * Gets bullet count for each unique bullet
+	 */
 	private void getBullets() {
 		int b;
 		for(int i = 0; i < bulletArray.length();i++) {
 			b = bulletArray.getInt(i);
+			//use a map to track unique bullets
 			if(map.containsKey(b)) {
 				addBullet(b,i);
 			}else {
+				//stores a stack of each unique bullet
 				mapValues.push(b);
 				map.put(b, createBullet(b,i));
 			}
 		}
 		combineBullets();
 	}
+	
+	/**
+	 * Combine bullets in map with the same L/M/H values
+	 */
 	private void combineBullets() {
 		Bullets a,b;
 		int t;
 		Stack<Integer> temp = new Stack();
 		Stack<Integer> values = mapValues;
 		Stack<Integer> result = new Stack();
+		//check L/M/H values for each bullet in stack
 		a = map.get(values.pop());
 		result.push(a.getBulletID());
 		while(!values.isEmpty()) {
 			t=values.pop();
 			b = map.get(t);
+			//if L/M/H is non-unique, combine bullet counts
 			if(a.getLight()==b.getLight() &&  a.getMedium()==b.getMedium() && a.getHeavy()==b.getHeavy())
 				a.addBullets(b.getBulletCount());
 			else {
@@ -143,22 +167,36 @@ public class Weapons {
 		}
 		mapValues = result;
 	}
-	private Bullets createBullet(int b,int i) {
-		Bullets bullet = new Bullets(b);
-		JSONObject barrage = barrageStats.getJSONObject(barrageArray.getInt(i)+"");
+	
+	/**
+	 * Creates new bullet object and adds bullet count
+	 * @param bulletId
+	 * @param index - index of bullet and barrage arrays
+	 * @return
+	 */
+	private Bullets createBullet(int bulletId,int index) {
+		Bullets bullet = new Bullets(bulletId);
+		JSONObject barrage = barrageStats.getJSONObject(barrageArray.getInt(index)+"");
 		int primal = barrage.getInt("primal_repeat")+1;
 		int senior = barrage.getInt("senior_repeat")+1;
 		bullet.addBullets(primal*senior);
 		return bullet;
 	}
-	private void addBullet(int b, int i) {
-		JSONObject barrage = barrageStats.getJSONObject(barrageArray.getInt(i)+"");
+	
+	/**
+	 * Adds bullet count to map
+	 * @param b
+	 * @param index - index of bullet and barrage arrays
+	 */
+	private void addBullet(int b, int index) {
+		JSONObject barrage = barrageStats.getJSONObject(barrageArray.getInt(index)+"");
 		int primal = barrage.getInt("primal_repeat")+1;
 		int senior = barrage.getInt("senior_repeat")+1;
 		Bullets bullet = map.get(b);
 		bullet.addBullets(primal*senior);
 		map.put(b, bullet);
 	}
+	
 	public void printWeapon() {
 		while(!mapValues.isEmpty()) {
 			Bullets b = map.get(mapValues.pop());

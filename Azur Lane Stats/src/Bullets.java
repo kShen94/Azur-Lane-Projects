@@ -55,11 +55,11 @@ public class Bullets {
 			e.printStackTrace();
 		}
 	}
+	
 	private void getBulletStats() {
 		JSONObject bullet = bulletStats.getJSONObject(bulletID+"");
 		getAmmoType(bullet.getInt("ammo_type"));
 		checkBuff(bullet.getJSONArray("attach_buff"));
-		checkParams(bullet.optJSONObject("extra_param"));
 		antisub = bullet.getInt("antisub_enhancement");
 		getAmmoMods(bullet.getJSONArray("damage_type"));
 		getExtras(bullet.optJSONObject("extra_param"));
@@ -68,6 +68,7 @@ public class Bullets {
 		range = bullet.getInt("range");
 		velocity = bullet.getInt("velocity");
 	}
+	
 	private void getSplash(JSONObject hitType) {
 		if(hitType != null) {
 			if(hitType.has("range"))
@@ -79,40 +80,33 @@ public class Bullets {
 		}
 	}
 	
+	/**
+	 * Checks extra_param for stats
+	 * randomOffsetX/Z, ignoreShield
+	 * @param extra
+	 */
 	private void getExtras(JSONObject extra) {
 		if(extra != null) {
-			if(extra.has("randomOffsetX"))
-				offsetX = extra.getInt("randomOffsetX");
-			else
-				offsetX = 0;
-			if(extra.has("randomOffsetZ"))
-				offsetZ = extra.getInt("randomOffsetZ");
-			else
-				offsetZ = 0;
-		}else {
-			offsetX = 0;
-			offsetZ = 0;
+			offsetX = extra.optInt("randomOffsetX",0);
+			offsetZ = extra.optInt("randomOffsetZ",0);
+			ignoreShield = extra.optBoolean("ignoreShield", false);
 		}
 	}
+	
 	private void getAmmoMods(JSONArray mods) {
 		light = mods.getDouble(0);
 		medium = mods.getDouble(1);
 		heavy = mods.getDouble(2);
 	}
+	
 	private void checkBuff(JSONArray buff) {
 		if(!buff.isEmpty()) {
 			buffID = buff.getJSONObject(0).getInt("buff_id");
 		}else
 			buffID = 0;
 	}
-	private void checkParams(JSONObject param) {
-		if(param == null)
-			ignoreShield= false;
-		else if(!param.isEmpty()) {
-			ignoreShield = param.optBoolean("ignoreShield", false);
-		}else
-			ignoreShield= false;
-	}
+	
+	
 	private void getAmmoType(int ammo) {
 		switch(ammo) {
 		case 1:
