@@ -56,7 +56,7 @@ public class ShipData {
 		while (keys.hasNext()) {
 			String key = keys.next();
 			//get mlb (-4), skip test ships (9-)
-			if(key.endsWith("4") && !key.startsWith("9")) {
+			if(key.endsWith("4")) {
 				//find ship name ignore case
 				if(shipStats.getJSONObject(key).getString("english_name").toLowerCase().contains(shipName.toLowerCase()))
 					return (shipTemplate.getJSONObject(key).getInt("group_type")+ "4");

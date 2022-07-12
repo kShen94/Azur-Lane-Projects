@@ -10,7 +10,7 @@ public class Main {
 		// TODO Auto-generated method stub
 
 		ShipStats s = new ShipStats();
-		String id = s.getShipID("emden", true);
+		String id = s.getShipID("joffre", true);
 		//String id = "9704034";
 		if(id != null) {
 			s.getShipStats(id);

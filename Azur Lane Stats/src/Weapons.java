@@ -28,18 +28,29 @@ public class Weapons {
 	int attrRatio;
 	String scaling;
 	JSONObject baseWeapon;
-	HashMap<Integer,Bullets> map = new HashMap();
-	Stack<Integer> mapValues = new Stack();
+	HashMap<Integer,Bullets> map = new HashMap<Integer, Bullets>();
+	Stack<Integer> mapValues = new Stack<Integer>();
+	int planeCount;
+	Boolean plane;
 	
 	public Weapons(String id) {
 		weapon_id = id;
+		plane = false;
 		importFiles();
 		checkWeapon();
 		printWeapon();
 	}
+	
+	public Weapons(String id, Boolean plane) {
+		weapon_id = id;
+		plane = true;
+		importFiles();
+		checkWeapon();
+	}
+	
 	// planes = type 10/11?
 	
-	private void importFiles() {
+	protected void importFiles() {
 		try {
 			weaponStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\weapon_property.json")));
 			planeStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\aircraft_template.json")));
@@ -54,7 +65,7 @@ public class Weapons {
 	/**
 	 * sets weaponid and baseweapon id if applicable
 	 */
-	private void checkWeapon() {
+	protected void checkWeapon() {
 		weapon = weaponStats.getJSONObject(weapon_id);
 		if(weapon.has("base"))
 			baseWeapon = weaponStats.getJSONObject(weapon.getInt("base")+"");
@@ -63,12 +74,33 @@ public class Weapons {
 		//type 10 and 11 are planes?
 		if(baseWeapon.getInt("type")== 10 || baseWeapon.getInt("type")== 11 ) {
 			getPlane();
-		}else
+		}else {
 			getGun();
+			
+		}
 	}
 	
 	private void getPlane() {
 		//TODO
+		JSONArray planeBarrageArray = weapon.optJSONArray("barrage_ID");
+		if(planeBarrageArray == null) {
+			planeBarrageArray = baseWeapon.getJSONArray("barrage_ID");
+		}
+		JSONArray planeBulletArray = weapon.getJSONArray("bullet_ID");
+		for(int i = 0; i < planeBulletArray.length();i++) {
+			LinkedList<String> loadout = new LinkedList<String>();
+			JSONObject barrage = barrageStats.getJSONObject(planeBarrageArray.getInt(i)+"");
+			int planes = (barrage.getInt("primal_repeat")+1)*(barrage.getInt("senior_repeat")+1);
+			JSONObject plane = planeStats.optJSONObject(planeBulletArray.getInt(i)+"");
+			if(plane == null) {
+				plane = planeStats.getJSONObject(weapon_id);
+			}
+			JSONArray load = plane.getJSONArray("weapon_ID");
+			for(int j = 0; j < load.length();j++) {
+				loadout.add(load.getInt(j)+"");
+			}
+			new Planes(loadout,planes);
+		}
 	}
 	
 	/**
@@ -90,7 +122,6 @@ public class Weapons {
 			barrageArray = weapon.getJSONArray("barrage_ID");
 		else
 			barrageArray = baseWeapon.getJSONArray("barrage_ID");
-			
 		getBullets();
 	}
 	
@@ -143,9 +174,9 @@ public class Weapons {
 	private void combineBullets() {
 		Bullets a,b;
 		int t;
-		Stack<Integer> temp = new Stack();
+		Stack<Integer> temp = new Stack<Integer>();
 		Stack<Integer> values = mapValues;
-		Stack<Integer> result = new Stack();
+		Stack<Integer> result = new Stack<Integer>();
 		//check L/M/H values for each bullet in stack
 		a = map.get(values.pop());
 		result.push(a.getBulletID());
@@ -197,6 +228,7 @@ public class Weapons {
 		map.put(b, bullet);
 	}
 	
+	
 	public void printWeapon() {
 		while(!mapValues.isEmpty()) {
 			Bullets b = map.get(mapValues.pop());
@@ -207,6 +239,35 @@ public class Weapons {
 			System.out.println("Coefficient: " +coeff/100);
 			System.out.println("Scaling: " + attrRatio/100 +"x "+scaling);
 			System.out.println( "Bullet Count: " + b.bulletCount);
+			System.out.println( "Ammo Type : " + b.ammoType);
+			System.out.println( "Ammo Mods: " + b.light+ "/" +b.medium+ "/" + b.heavy);
+			if(b.offsetX != 0)
+				System.out.println("SpreadX: " + b.offsetX);
+			if(b.offsetZ !=0) 
+				System.out.println("SpreadZ: " + b.offsetZ);
+			if(b.splash != 0)
+				System.out.println("Splash: "+ b.splash);
+			if(b.buffID != 0)
+				System.out.println("BuffID: "+b.buffID);
+			System.out.println("Pierce: " + b.pierce);
+			System.out.println("Velocity: " + b.velocity);
+			if(b.antisub !=0)
+				System.out.println("antisub: " + b.antisub);
+			if(b.ignoreShield)
+				System.out.println("Ignore Shields");
+		}
+	}
+	
+	public void printWeaponBulletMultiplier(int x) {
+		while(!mapValues.isEmpty()) {
+			Bullets b = map.get(mapValues.pop());
+			System.out.println("-----------------------------------------------");
+			System.out.println("WeaponID: "+ weapon_id);
+			System.out.println( "BulletID: "+ b.bulletID);
+			System.out.println("Damage: " +damage);
+			System.out.println("Coefficient: " +coeff/100);
+			System.out.println("Scaling: " + attrRatio/100 +"x "+scaling);
+			System.out.println( "Bullet Count: " + b.bulletCount*x);
 			System.out.println( "Ammo Type : " + b.ammoType);
 			System.out.println( "Ammo Mods: " + b.light+ "/" +b.medium+ "/" + b.heavy);
 			if(b.offsetX != 0)
