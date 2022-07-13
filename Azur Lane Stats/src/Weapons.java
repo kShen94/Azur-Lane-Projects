@@ -191,7 +191,6 @@ public class Weapons {
 			}
 			if(values.isEmpty() && !temp.isEmpty()) {
 				values = temp;
-				temp.clear();
 				a = map.get(values.pop());
 				result.push(a.getBulletID());
 			}

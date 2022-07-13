@@ -57,7 +57,7 @@ public class ShipSkills extends ShipData{
 	 */
 	private void traverseBuff(String buffID) {
 		//System.out.println("buff_"+buffID);
-		if(skillMap.containsKey(buffID)) {
+		if(skillMap.containsKey("buff_"+buffID)) {
 			return;
 		}else {
 			JSONArray b;
@@ -72,8 +72,6 @@ public class ShipSkills extends ShipData{
 			else {
 				b = obj.getJSONObject("2").getJSONArray("effect_list");
 			}
-			//System.out.println("buff_"+buffID+ " : "+b);
-			//System.out.println(b.length());
 			for(int i = 0; i < b.length(); i++) {
 				JSONObject effect = b.getJSONObject(i);
 				if(effect.has("arg_list")) {
@@ -103,7 +101,7 @@ public class ShipSkills extends ShipData{
 	 * @param skillID
 	 */
 	private void traverseSkill(String skillID) {
-		if(skillMap.containsKey(skillID)) {
+		if(skillMap.containsKey("skill_"+skillID)) {
 			return;
 		}else {
 			JSONArray b;

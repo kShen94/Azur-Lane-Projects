@@ -70,6 +70,8 @@ public class ShipStats extends ShipData{
 	int eff4;
 	List<Integer> transID = new LinkedList<>();
 	HashMap<String,Double> transMap = new HashMap<>();
+	Boolean isResearch;
+	double[] rsStats = new double[] {0,0,0,0,0,0,0,0,0,0,0,0,0};
 	
 	public void getShipStats(String id) {
 		this.id = id;
@@ -83,12 +85,22 @@ public class ShipStats extends ShipData{
 		name = stats.getString("english_name");
 		importStats();
 		importStrengthen();
+		checkResearch();
 		importGuns();
 		
 	}
 	
 	public String getID() {
 		return id;
+	}
+	
+	private void checkResearch() {
+		for (Research r: Research.values()) {
+			if(r.getName().equals(name)) {
+				rsStats = r.getStats();
+				break;
+			}
+		}
 	}
 	
 	/**
@@ -336,56 +348,75 @@ public class ShipStats extends ShipData{
 	//+ shipDataStatistics['attrs_growth_extra'][statType[statTypeName]] 
 	//* (max(level, 100) - 100) / 1000) * 1.06 + retrofitStats[statTypeName])
 	
+	/** Research stats array
+	 *  0 - equipment_proficiency_1
+	 *  1 - equipment_proficiency_2
+	 *  2 - equipment_proficiency_3
+	 *  3 - hp
+	 *  4 - fp
+	 *  5 - trp
+	 *  6 - avi
+	 *  7 - AA
+	 *  8 - reload
+	 *  9 - eva
+	 *  10 - hit
+	 *  11 - asw
+	 *  12 - luck
+	 */
 	public double getHP(int level, int aff) {
 		if(checkRetro)
-			return (hp+(hpGrowth*(level-1)/1000.0))*addAff(aff) +transMap.getOrDefault("durability", 0.00);
+			return (hp+(hpGrowth*(level-1)/1000.0) + rsStats[3])*addAff(aff) +transMap.getOrDefault("durability", 0.00);
 		else
-			return (hp+(hpGrowth*(level-1)/1000.0))*addAff(aff);
+			return (hp+(hpGrowth*(level-1)/1000.0)+ rsStats[3])*addAff(aff);
 	}
 	public double getFp(int level, int aff){
 		if(checkRetro)
-			return (fp+(fpGrowth*(level-1)/1000.0)+fpStr)*addAff(aff)+transMap.getOrDefault("cannon", 0.00);
+			return (fp+(fpGrowth*(level-1)/1000.0)+fpStr + rsStats[4])*addAff(aff)+transMap.getOrDefault("cannon", 0.00);
 		else
-			return (fp+(fpGrowth*(level-1)/1000.0)+fpStr)*addAff(aff);
+			return (fp+(fpGrowth*(level-1)/1000.0)+fpStr + rsStats[4])*addAff(aff);
 	}
 	public double getTrp(int level,int aff){
 		if(checkRetro)
-			return (trp+(trpGrowth*(level-1)/1000.0)+trpStr)*addAff(aff)+transMap.getOrDefault("torpedo", 0.00);
+			return (trp+(trpGrowth*(level-1)/1000.0)+trpStr + rsStats[5])*addAff(aff)+transMap.getOrDefault("torpedo", 0.00);
 		else
-			return (trp+(trpGrowth*(level-1)/1000.0)+trpStr)*addAff(aff);
+			return (trp+(trpGrowth*(level-1)/1000.0)+trpStr + rsStats[5])*addAff(aff);
 	}
 	public double getAA(int level, int aff){
 		if(checkRetro)
-			return (aa+(aaGrowth*(level-1)/1000.0))*addAff(aff)+transMap.getOrDefault("antiaircraft", 0.00);
-		else
-			return (aa+(aaGrowth*(level-1)/1000.0))*addAff(aff);
+		{	
+			System.out.println(aa +"," + aaGrowth + "," + rsStats[7]);
+			return (aa+(aaGrowth*(level-1)/1000.0) + rsStats[7])*addAff(aff)+transMap.getOrDefault("antiaircraft", 0.00);
+		}
+		else			
+			return (aa+(aaGrowth*(level-1)/1000.0) + rsStats[7])*addAff(aff);
+			
 	}
 	public double getAvi(int level,int aff){
 		if(checkRetro)
-			return (avi+(aviGrowth*(level-1)/1000.0)+aviStr)*addAff(aff)+transMap.getOrDefault("air", 0.00);
+			return (avi+(aviGrowth*(level-1)/1000.0)+aviStr + rsStats[6])*addAff(aff)+transMap.getOrDefault("air", 0.00);
 		else
-			return (avi+(aviGrowth*(level-1)/1000.0)+aviStr)*addAff(aff);
+			return (avi+(aviGrowth*(level-1)/1000.0)+aviStr + rsStats[6])*addAff(aff);
 	}
 	public double getRld(int level,int aff){
 		if(checkRetro)
-			return (rld+(rldGrowth*(level-1)/1000.0)+rldStr)*addAff(aff)+transMap.getOrDefault("reload", 0.00);
+			return (rld+(rldGrowth*(level-1)/1000.0)+rldStr + rsStats[8])*addAff(aff)+transMap.getOrDefault("reload", 0.00);
 		else
-			return (rld+(rldGrowth*(level-1)/1000.0)+rldStr)*addAff(aff);
+			return (rld+(rldGrowth*(level-1)/1000.0)+rldStr + rsStats[8])*addAff(aff);
 	}
 	public double getAcc(int level,int aff){
 		if(checkRetro)
-			return (acc+(accGrowth*(level-1)/1000.0))*addAff(aff)+transMap.getOrDefault("hit", 0.00);
+			return (acc+(accGrowth*(level-1)/1000.0) + rsStats[10])*addAff(aff)+transMap.getOrDefault("hit", 0.00);
 		else
-			return (acc+(accGrowth*(level-1)/1000.0))*addAff(aff);
+			return (acc+(accGrowth*(level-1)/1000.0) + rsStats[10])*addAff(aff);
 	}
 	public double getEva(int level, int aff){
 		if(checkRetro)
-			return (eva+(evaGrowth*(level-1)/1000.0))*addAff(aff)+transMap.getOrDefault("dodge", 0.00);
+			return (eva+(evaGrowth*(level-1)/1000.0) + rsStats[9])*addAff(aff)+transMap.getOrDefault("dodge", 0.00);
 		else
-			return (eva+(evaGrowth*(level-1)/1000.0))*addAff(aff);
+			return (eva+(evaGrowth*(level-1)/1000.0) + rsStats[9])*addAff(aff);
 	}
 	public int getLuck(){
-		return luck;
+		return (int) (luck + rsStats[12]);
 	}
 	public double getSpeed(){
 		if(checkRetro)
@@ -395,27 +426,27 @@ public class ShipStats extends ShipData{
 	}
 	public double getAsw(int level, int aff){
 		if(checkRetro)
-			return (asw+(aswGrowth*(level-1)/1000.0))*addAff(aff)+transMap.getOrDefault("antisub", 0.00);
+			return (asw+(aswGrowth*(level-1)/1000.0) + rsStats[11])*addAff(aff)+transMap.getOrDefault("antisub", 0.00);
 		else
-			return (asw+(aswGrowth*(level-1)/1000.0))*addAff(aff);
+			return (asw+(aswGrowth*(level-1)/1000.0) + rsStats[11])*addAff(aff);
 	}
 	public int getEff1() {
 		if(checkRetro)
-			return (int) (eff1+transMap.getOrDefault("equipment_proficiency_1", 0.00)*100);
+			return (int) (eff1+transMap.getOrDefault("equipment_proficiency_1", 0.00)*100 + rsStats[0]);
 		else
-			return eff1;
+			return (int) (eff1 + rsStats[0]);
 	}
 	public int getEff2() {
 		if(checkRetro)
-			return (int) (eff2+transMap.getOrDefault("equipment_proficiency_2", 0.00)*100);
+			return (int) (eff2+transMap.getOrDefault("equipment_proficiency_2", 0.00)*100 + rsStats[1]);
 		else
-			return eff2;
+			return (int) (eff2 + rsStats[1]);
 	}
 	public int getEff3() {
 		if(checkRetro)
-			return (int) (eff3+transMap.getOrDefault("equipment_proficiency_3", 0.00)*100);
+			return (int) (eff3+transMap.getOrDefault("equipment_proficiency_3", 0.00)*100 + rsStats[2]);
 		else
-			return eff3;
+			return (int) (eff3 + rsStats[2]);
 	}
 	public int getEff4() {
 		return eff4;
