@@ -384,7 +384,6 @@ public class ShipStats extends ShipData{
 	public double getAA(int level, int aff){
 		if(checkRetro)
 		{	
-			System.out.println(aa +"," + aaGrowth + "," + rsStats[7]);
 			return (aa+(aaGrowth*(level-1)/1000.0) + rsStats[7])*addAff(aff)+transMap.getOrDefault("antiaircraft", 0.00);
 		}
 		else			
