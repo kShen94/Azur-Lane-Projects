@@ -2,16 +2,18 @@ import java.util.LinkedList;
 
 public class Main {
 	ShipStats s = new ShipStats();
-	public void getShipByName(String name) {
-
-	}
-
+	//TODO add meta stats, optimize searching, fs skill upgrades, add functionality for rng skills
+	// figure out augs
+	//copy jsons in every update, too lazy to link them to directories
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
 		ShipStats s = new ShipStats();
-		String id = s.getShipID("roma", true);
-		//String id = "9704034";
+		//search by ship name
+		String id = s.getShipID("marco", true);
+		//Search by ship id
+		//String id = "9703014";
+		
+		
 		if(id != null) {
 			s.getShipStats(id);
 			s.printStats(120, 100);

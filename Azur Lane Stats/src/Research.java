@@ -22,11 +22,11 @@ public enum Research {
 	Odin("KMS Odin", new double[] {10,0,10,289+579+868,0,0,0,16+31+47,0,0,0,0,15}),
 	Champagne("FFNF Champagne", new double[] {10,0,10,285+571+856,0,0,0,11+22+33,0,0,0,0,15}),
 	//PR4
-	Anchorage("USS Anchorage", new double[] {10,0,0,268+537+805,0,0,0,10+21+31,0,5+10,0,0,0}),
+	Anchorage("USS Anchorage", new double[] {10,0,0,268+537+805,0,0,0,10+21+31,0,5+10,0,0,15}),
 	Hakuryuu("IJN Hakuryū", new double[] {5,10,5,346+691+1037,0,0,0,15+30+45,0,0,0,0,0}),
 	Ägir("KMS Ägir", new double[] {10,0,10,338+675+1014,0,0,0,12+23+34,0,5,0,0,0}),
-	AugustVonParseval("KMS August von Parseval", new double[] {10,0,10,310+621+931,0,0,0,15+30+46,0,0,0,0,0}),
-	MarcoPolo("RN Marco Polo", new double[] {10,0,10,344+688+1032,0,0,0,12+24+35,0,0,0,0,0}),
+	AugustVonParseval("KMS August von Parseval", new double[] {10,0,10,310+621+931,0,0,0,15+30+46,0,0,0,0,15}),
+	MarcoPolo("RN Marco Polo", new double[] {10,0,10,344+688+1032,0,0,0,12+24+35,0,0,0,0,15}),
 	//PR5
 	Brest("FFNF Brest", new double[] {0,0,10,307+614+921,0,0,0,12+23+35,0,5,0,0,0}),
 	Plymouth("USS Anchorage", new double[] {15,0,0,227+453+681,0,0,0,16+31+46,0,0,0,0,0}),
