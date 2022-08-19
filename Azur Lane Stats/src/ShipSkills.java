@@ -47,6 +47,7 @@ public class ShipSkills extends ShipData{
 	 */
 	public void mapSkills() {
 		for(int i =0; i < skillList.length(); i++) {
+			//System.out.println(skillList.get(i));
 			traverseBuff(Integer.toString(skillList.getInt(i)));
 		}
 	}
@@ -74,7 +75,7 @@ public class ShipSkills extends ShipData{
 			}
 			for(int i = 0; i < b.length(); i++) {
 				JSONObject effect = b.getJSONObject(i);
-				if(effect.has("arg_list")) {
+				if(effect.has("arg_list") && effect.get("arg_list") instanceof JSONObject) {
 					effect = effect.getJSONObject("arg_list");
 					//if skillID is found, add current buffID -> skillID to map
 					if(effect.has("skill_id")) {
@@ -89,7 +90,7 @@ public class ShipSkills extends ShipData{
 					//if weaponID is found, add current buffID -> weaponID to map
 					else if(effect.has("weapon_id")) {
 						addToMap("buff_"+buffID,"weapon_"+effect.getInt("weapon_id"));
-						weaponList.add("weapon_"+effect.getInt("weapon_id"));
+						weaponList.add(effect.getInt("weapon_id")+"");
 					}
 				}
 			}
@@ -110,11 +111,14 @@ public class ShipSkills extends ShipData{
 			if (obj.has("10") && (obj.get("10") instanceof JSONObject) ) {
 				b = obj.getJSONObject("10").getJSONArray("effect_list");
 			}
+			else if(obj.has("2") && (obj.get("2") instanceof JSONObject)){
+				b = obj.getJSONObject("2").getJSONArray("effect_list");
+			}
+			else if(obj.has("1") && (obj.get("1") instanceof JSONObject)){
+				b = obj.getJSONObject("1").getJSONArray("effect_list");
+			}
 			else if(obj.has("effect_list") && !obj.getJSONArray("effect_list").isEmpty()) {
 				b = obj.getJSONArray("effect_list");
-
-			}else if(obj.has("2") && (obj.get("2") instanceof JSONObject)){
-				b = obj.getJSONObject("2").getJSONArray("effect_list");
 			}else
 				return;
 			for(int i = 0; i < b.length(); i++) {
