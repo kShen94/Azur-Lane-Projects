@@ -107,7 +107,10 @@ public class Weapons {
 	 * Gets gun stats
 	 */
 	private void getGun() {
-		damage = weapon.getInt("damage");
+		if(weapon.has("damage"))
+			damage = weapon.getInt("damage");
+		else
+			damage = baseWeapon.getInt("damage");
 		coeff = baseWeapon.getInt("corrected");
 		attr = baseWeapon.getInt("attack_attribute");
 		attrRatio = baseWeapon.getInt("attack_attribute_ratio");
