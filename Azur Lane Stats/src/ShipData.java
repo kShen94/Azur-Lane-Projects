@@ -49,9 +49,7 @@ public class ShipData {
 	 * @param shipName
 	 * @return key/id of ship
 	 */
-	public String getShipID(String shipName,boolean retro) {
-		if(retro)
-			checkRetro = true;
+	public String getShipID(String shipName) {
 		Iterator<String> keys = shipStats.keys();
 		while (keys.hasNext()) {
 			String key = keys.next();

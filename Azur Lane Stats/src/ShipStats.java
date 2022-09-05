@@ -73,6 +73,7 @@ public class ShipStats extends ShipData{
 	Boolean isResearch;
 	double[] rsStats = new double[] {0,0,0,0,0,0,0,0,0,0,0,0,0};
 	
+	//Deprecated
 	public void getShipStats(String id) {
 		this.id = id;
 		groupID = id.substring(0, id.length()-1);
@@ -450,7 +451,9 @@ public class ShipStats extends ShipData{
 	public int getEff4() {
 		return eff4;
 	}
-	
+	public void setRetroTrue() {
+		checkRetro = true;
+	}
 	public void printStats(int level, int aff) {
 		System.out.println(name + " | " + id);
 		System.out.println("Lv: "+ level + ", Aff: " + aff );

@@ -9,15 +9,22 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-public class ShipSkills extends ShipData{
+public class ShipSkills{
 	String id;
 	JSONArray skillList;
 	HashMap<String,LinkedList<String>> skillMap = new HashMap<String,LinkedList<String>>();
 	JSONObject buff, skill;
 	LinkedList<String> weaponList = new LinkedList<>();
+	String dir = System.getProperty("user.dir");
+	JSONObject shipTemplate;
 
 	public ShipSkills(String id) {
 		this.id = id;
+		try {
+			shipTemplate = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\ship_data_template.json")));
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 		importJSON();
 		skillList();
 		mapSkills();
