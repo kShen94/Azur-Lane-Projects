@@ -598,6 +598,13 @@ public class ShipIds {
 		shipId.put("Memphis.META","9702024");
 		shipId.put("Repulse.META","9704034");
 		shipId.put("Terento.META","9703014");
+		shipId.put("Musashi","305104");
+		shipId.put("Wakatsuki","301884");
+		shipId.put("Sakawa","302234");
+		shipId.put("Haguro","303104");
+		shipId.put("Miyuki","301044");
+		
+		
 		
 	}
 	

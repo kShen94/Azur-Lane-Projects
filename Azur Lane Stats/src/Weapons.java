@@ -23,9 +23,9 @@ public class Weapons {
 	JSONArray bulletArray;
 	String dir = System.getProperty("user.dir");
 	int damage;
-	int coeff;
+	double coeff;
 	int attr;
-	int attrRatio;
+	double attrRatio;
 	String scaling;
 	JSONObject baseWeapon;
 	HashMap<Integer,Bullets> map = new HashMap<Integer, Bullets>();
@@ -111,9 +111,9 @@ public class Weapons {
 			damage = weapon.getInt("damage");
 		else
 			damage = baseWeapon.getInt("damage");
-		coeff = baseWeapon.getInt("corrected");
+		coeff = baseWeapon.getDouble("corrected");
 		attr = baseWeapon.getInt("attack_attribute");
-		attrRatio = baseWeapon.getInt("attack_attribute_ratio");
+		attrRatio = baseWeapon.getDouble("attack_attribute_ratio");
 		getScaling(attr);
 		//if bulletID is in current weapon, use array, otherwise use baseWeapon
 		if(weapon.has("bullet_ID")) 

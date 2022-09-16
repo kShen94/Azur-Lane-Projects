@@ -71,7 +71,8 @@ public class ShipSkills{
 			JSONArray b;
 			JSONObject obj = buff.getJSONObject("buff_"+buffID);
 			//navigates through json to find effect_list of the object
-			if(obj.has("effect_list") && !obj.getJSONArray("effect_list").isEmpty()) {
+			if(obj.has("effect_list") && !obj.getJSONArray("effect_list").isEmpty() 
+					&& !(obj.getJSONArray("effect_list").get(0) instanceof JSONArray)) {
 				b = obj.getJSONArray("effect_list");
 			}else if (obj.has("10") && (obj.get("10") instanceof JSONObject)) {
 				b = obj.getJSONObject("10").getJSONArray("effect_list");
@@ -105,7 +106,7 @@ public class ShipSkills{
 	}
 
 	/**
-	 * Searches within the buffID for farther buffIDs and skillIDs, then recursively traverse through them
+	 * Searches within the skillID for farther buffIDs and skillIDs, then recursively traverse through them
 	 * @param skillID
 	 */
 	private void traverseSkill(String skillID) {
