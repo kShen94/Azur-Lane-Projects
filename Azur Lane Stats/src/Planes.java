@@ -1,16 +1,12 @@
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.util.LinkedList;
-import org.json.JSONException;
 import org.json.JSONObject;
-import org.json.JSONTokener;
 
 public class Planes{
 	LinkedList<String> weaponIDs;
 	int planeCount;
-	JSONObject weaponStats;
-	JSONObject planeStats;
-	JSONObject barrageStats;
+	JSONObject weaponStats = JsonData.weaponStats;
+	JSONObject planeStats = JsonData.planeStats;;
+	JSONObject barrageStats = JsonData.barrageStats;;
 	String dir = System.getProperty("user.dir");
 	LinkedList<String> AAGuns = new LinkedList<String>();
 	LinkedList<Weapons> weaponList = new LinkedList<Weapons>();
@@ -18,26 +14,8 @@ public class Planes{
 	public Planes(LinkedList<String> id, int planes) {
 		weaponIDs = id;
 		planeCount = planes;
-		importFiles();
 		getWeapons();
 		printWeapons();
-	}
-	
-
-	
-	private void importFiles() {
-		try {
-			weaponStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\weapon_property.json")));
-			planeStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\aircraft_template.json")));
-			barrageStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\barrage_template.json")));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
 	}
 	
 	private void getWeapons(){
@@ -73,7 +51,8 @@ public class Planes{
 		}
 		System.out.println("Total Planes: " + planeCount);
 		for(Weapons w: weaponList) {
-			w.printWeaponBulletMultiplier(planeCount);
+			w.printWeaponBulletMultiplier(planeCount, true);
 		}
+
 	}
 }

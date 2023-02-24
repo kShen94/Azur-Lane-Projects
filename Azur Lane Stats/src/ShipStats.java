@@ -230,9 +230,11 @@ public class ShipStats extends ShipData{
 		JSONArray e3 = shipTemplate.getJSONObject(id).getJSONArray("equip_3");
 		//for each value, compare with hashmap for string, append string for each equip
 		for(int i3 = 0; i3<e3.length(); i3++) {
-			equip3 = equip3+weaponType.get(e3.getInt(i3));
+			String type = weaponType.get(e3.getInt(i3));
+			if(type != null)
+				equip3 = equip3 + type;
 			if(i3< e3.length()-1) {
-				equip3= equip1+"/";
+				equip3= equip3+"/";
 			}
 		}
 	}
@@ -268,7 +270,8 @@ public class ShipStats extends ShipData{
 		weaponType.put(15, "ASW Plane");
 		weaponType.put(17, "ASW Heli");
 		weaponType.put(18, "Cargo");
-		weaponType.put(20, "Missile");				
+		weaponType.put(20, "Missile");
+		weaponType.put(21, "Time Fuze");
 	}
 	
 	/**

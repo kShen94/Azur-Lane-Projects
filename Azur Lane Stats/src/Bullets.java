@@ -20,6 +20,7 @@ public class Bullets {
 	JSONObject bulletStats;
 	int antisub;
 	boolean ignoreShield;
+	boolean shrapnel = false;
 	
 	public Bullets(int bulletid) {
 		bulletID = bulletid;
@@ -90,6 +91,9 @@ public class Bullets {
 			offsetX = extra.optInt("randomOffsetX",0);
 			offsetZ = extra.optInt("randomOffsetZ",0);
 			ignoreShield = extra.optBoolean("ignoreShield", false);
+			JSONObject shrapnelCheck = extra.optJSONObject("shrapnel");
+			if(shrapnelCheck != null)
+				shrapnel=true;
 		}
 	}
 	
