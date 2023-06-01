@@ -633,6 +633,27 @@ public class ShipIds {
 		shipId.put("Scylla", "202334");
 		shipId.put("Argus", "206024");
 		shipId.put("Hero", "201364");
+		shipId.put("Queen Elizabeth.META", "9705044");
+		shipId.put("Voroshilov", "702074");
+		shipId.put("Kursk", "703024");
+		shipId.put("Sevastopol", "705074");
+		shipId.put("La Galissonnière.META", "9702044");
+		shipId.put("La Galissonniere META", "9702044");
+		shipId.put("Luna", "10600084");
+		shipId.put("Tamaki", "10600094");
+		shipId.put("Little Formidable", "207134");
+		shipId.put("smol formi", "207134");
+		shipId.put("Otto von Alvensleben", "401994");
+		shipId.put("Bismarch Zwei", "405054");
+		shipId.put("Bis2", "405054");
+		shipId.put("Regensburg", "402104");
+		shipId.put("Jade", "406034");
+		shipId.put("U556.META", "9708014");
+		shipId.put("U556 META", "9708014");
+		shipId.put("Vestal.META", "9712014");
+		shipId.put("Vestal META", "9712014");
+		shipId.put("taihou-chan", "307134");
+		shipId.put("smol taihou", "307134");
 		
 	}
 	

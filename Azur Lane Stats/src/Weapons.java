@@ -320,7 +320,7 @@ public class Weapons {
 		}
 	}
 	
-	public void printExcel(boolean isPlane, Bullets b, int planeCount) {
+	private void printExcel(boolean isPlane, Bullets b, int planeCount) {
 		String bulletId = String.valueOf(b.bulletID);
 		int bulletCount = b.bulletCount;
 		String ammoType = b.ammoType;
@@ -335,17 +335,53 @@ public class Weapons {
 		int velocity = b.velocity;
 		int antisub = b.antisub;
 		
-		String buff = "\t";
+		String buff = "";
 		System.out.println("excel : --------------");
 		if(isPlane) {
 			System.out.println(weapon_id+"\t\t\t\t\t\t\t\t\t\t\t\t\t"+planeCount+"\t");
 			bulletCount = b.bulletCount*planeCount;
 		}
 		if(buffid !=0)
-			buff = String.valueOf(buffid)+"\t";
+			buff = String.valueOf(buffid);
 		
+		String note = createNote(b);
 		System.out.println(weapon_id+"\t"+bulletId+"\t"+damage+"\t"+ammoType+"\t"+coeff/100+"\t"+attrRatio/100+"\t"+scaling+"\t"+
-				light+"\t"+med+"\t"+heavy+"\t\t"+buff+"\t"+bulletCount);
+				light+"\t"+med+"\t"+heavy+"\t"+ note+"\t"+buff+"\t"+bulletCount);
+	}
+	
+	private String createNote(Bullets b) {
+		boolean comma = false;
+		String note = "";
+		
+		if (b.pierce > 0) {
+			note = note + "pierce " + b.pierce;
+			comma=true;
+		}
+		
+		if(b.offsetX > 0 && b.offsetX==b.offsetZ) {
+			note = addComma(note,comma);
+			note = note + b.offsetX + " spread";
+			comma=true;
+		}
+		else if(b.offsetX > 0 && b.offsetZ > 0) {
+			note = addComma(note,comma);
+			note = note + b.offsetX+ " spreadX, "+ b.offsetZ + " spreadZ";
+			comma=true;
+		}
+		
+		if(b.splash > 0 && b.splash != 3) {
+			note = addComma(note,comma);
+			note = note + b.splash + " splash";
+			comma=true;
+		}
+		note = note + " \t";
+		return note;
+	}
+	
+	private String addComma(String note, boolean comma) {
+		if(comma)
+			note = note + ", ";
+		return note;
 	}
 	
 }
