@@ -38,6 +38,7 @@ public class ShipIds {
 		shipId.put("USS Atlanta","102064");
 		shipId.put("USS Juneau","102074");
 		shipId.put("USS San Diego","102084");
+		shipId.put("USS Sandy","102084");
 		shipId.put("USS Cleveland","102094");
 		shipId.put("USS Columbia","102104");
 		shipId.put("USS Pensacola","103014");
@@ -192,6 +193,7 @@ public class ShipIds {
 		shipId.put("IJN Houshou","306034");
 		shipId.put("IJN Shouhou","306054");
 		shipId.put("IJN Ryujou","306064");
+		shipId.put("IJN Ryuujou","306064");
 		shipId.put("IJN Akagi","307014");
 		shipId.put("IJN Kaga","307024");
 		shipId.put("IJN Souryuu","307034");
@@ -338,7 +340,7 @@ public class ShipIds {
 		shipId.put("HMS Echo","201294");
 		shipId.put("USS Helena","102194");
 		shipId.put("USS Cleveland","102204");
-		shipId.put("USS San Diego","102214");
+		shipId.put("USS Li'l Sandy","102214");
 		shipId.put("HMS Swiftsure","202234");
 		shipId.put("MNF Le Malin","901114");
 		shipId.put("FFNF L'Opiniatre","801044");
@@ -654,6 +656,24 @@ public class ShipIds {
 		shipId.put("Vestal META", "9712014");
 		shipId.put("taihou-chan", "307134");
 		shipId.put("smol taihou", "307134");
+		shipId.put("Algérie.META", "9703024");
+		shipId.put("Attilio Regolo", "601104");
+		shipId.put("Gorizia", "603064");
+		shipId.put("Andrea Doria", "605074");
+		shipId.put("Kearsarge", "199044");
+		shipId.put("Shimanto", "399064");
+		shipId.put("Felix Schultz", "499084");
+		shipId.put("Hindenburg", "499094");
+		shipId.put("Flandre", "999024");
+		
+		shipId.put("Hatakaze.META", "9701034");
+		shipId.put("Hatakaze META", "9701034");
+		shipId.put("Nidaime", "10800084");
+		shipId.put("2nd", "10800084");
+		shipId.put("Hime", "10800094");
+		shipId.put("Princess", "10800094");
+		shipId.put("Marseillaise", "902024");
+
 		
 	}
 	

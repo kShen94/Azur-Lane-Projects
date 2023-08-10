@@ -16,9 +16,9 @@ public class Weapons {
 	List<Integer> bullet_id = new LinkedList<>();
 	List<Integer> barrage_id = new LinkedList<>();
 	List<Integer> bulletCount = new LinkedList<>();
-	JSONObject weaponStats;
-	JSONObject planeStats;
-	JSONObject barrageStats;
+	JSONObject weaponStats = JsonData.weaponStats;
+	JSONObject planeStats = JsonData.planeStats;
+	JSONObject barrageStats = JsonData.barrageStats;
 	JSONArray barrageArray;
 	JSONArray bulletArray;
 	String dir = System.getProperty("user.dir");
@@ -32,36 +32,51 @@ public class Weapons {
 	Stack<Integer> mapValues = new Stack<Integer>();
 	int planeCount;
 	Boolean plane;
+	String target = "";
 
 	public Weapons(String id) {
 		weapon_id = id;
 		plane = false;
-		importFiles();
 		checkWeapon();
-		printWeapon();
+	}
+	
+	public Weapons(String id,String target) {
+		this.target = target;
+		weapon_id = id;
+		correctTarget();
+		plane = false;
+		checkWeapon();
+	}
+	
+	public Weapons(String id,String target, boolean plane) {
+		this.target = target;
+		weapon_id = id;
+		correctTarget();
+		this.plane = plane;
+		checkWeapon();
 	}
 
 	public Weapons(String id, Boolean plane) {
 		weapon_id = id;
-		plane = true;
-		importFiles();
+		this.plane = plane;
 		checkWeapon();
 	}
 
-	// planes = type 10/11?
-
-	protected void importFiles() {
-		try {
-			weaponStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\weapon_property.json")));
-			planeStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\aircraft_template.json")));
-			barrageStats = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\barrage_template.json")));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		}
+	private void correctTarget() {
+		if(target.equals("TargetNil"))
+			target = "";
+		else if(target.equals("TargetHarmRandomByWeight"))
+			target = "Priority target";
+		else if(target.equals("TargetHarmRandom"))
+			target = "Random target";
+		else if(target.equals("TargetHarmNearest"))
+			target = "Nearest target";
+		else if(target.equals("TargetHarmFarthest"))
+			target = "Farthest target";
+		else if(target.equals("TargetSameToLastEffect"))
+			target = "Same target";
 	}
-
+	//TargetHarmNearest
 	/**
 	 * sets weaponid and baseweapon id if applicable
 	 */
@@ -92,7 +107,6 @@ public class Weapons {
 			createPlane(planeBulletArray,planeBarrageArray);
 		else
 			createPlane(id,planeBarrageArray);
-
 	}
 
 	private void createPlane(JSONArray planeBulletArray,JSONArray planeBarrageArray) {
@@ -108,7 +122,7 @@ public class Weapons {
 			for(int j = 0; j < load.length();j++) {
 				loadout.add(load.getInt(j)+"");
 			}
-			new Planes(loadout,planes);
+			Abilities.addPlane(new Planes(loadout,planes));
 		}
 	}
 	private void createPlane(String id, JSONArray planeBarrageArray) {
@@ -135,7 +149,10 @@ public class Weapons {
 			damage = weapon.getInt("damage");
 		else
 			damage = baseWeapon.getInt("damage");
-		coeff = baseWeapon.getDouble("corrected");
+		if(weapon.has("corrected"))
+			coeff = weapon.getDouble("corrected");
+		else
+			coeff = baseWeapon.getDouble("corrected");
 		attr = baseWeapon.getInt("attack_attribute");
 		attrRatio = baseWeapon.getDouble("attack_attribute_ratio");
 		getScaling(attr);
@@ -334,8 +351,10 @@ public class Weapons {
 		int pierce = b.pierce;
 		int velocity = b.velocity;
 		int antisub = b.antisub;
+		int rant = b.rant/100;
 		
 		String buff = "";
+		String proc = "";
 		System.out.println("excel : --------------");
 		if(isPlane) {
 			System.out.println(weapon_id+"\t\t\t\t\t\t\t\t\t\t\t\t\t"+planeCount+"\t");
@@ -343,15 +362,21 @@ public class Weapons {
 		}
 		if(buffid !=0)
 			buff = String.valueOf(buffid);
+		if(rant != 0)
+			proc = String.valueOf(rant);
 		
 		String note = createNote(b);
 		System.out.println(weapon_id+"\t"+bulletId+"\t"+damage+"\t"+ammoType+"\t"+coeff/100+"\t"+attrRatio/100+"\t"+scaling+"\t"+
-				light+"\t"+med+"\t"+heavy+"\t"+ note+"\t"+buff+"\t"+bulletCount);
+				light+"\t"+med+"\t"+heavy+"\t"+ note+proc+"\t"+buff+"\t"+bulletCount);
 	}
 	
 	private String createNote(Bullets b) {
 		boolean comma = false;
 		String note = "";
+		if(!target.isBlank()) {
+			note = note + target;
+			comma=true;
+		}
 		
 		if (b.pierce > 0) {
 			note = note + "pierce " + b.pierce;

@@ -10,12 +10,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-public class ShipStats extends ShipData{
+public class ShipStats {
 	HashMap<Integer,String> weaponType = new HashMap<Integer,String>();
-	JSONObject shipTrans;
-	JSONObject transData;
+	JSONObject shipTrans = JsonData.shipTrans;
+	JSONObject transData = JsonData.transData;
+	JSONObject shipStats = JsonData.shipStats;
+	JSONObject shipTemplate = JsonData.shipTemplate;
+	JSONObject str = JsonData.strengthenStats;
 	JSONObject stats;
-	JSONObject template;
+	boolean checkRetro = false;
 	String id;
 	String groupID;
 	int type;
@@ -82,7 +85,7 @@ public class ShipStats extends ShipData{
 			getRetroStats();
 		}
 		weaponMap();
-		stats = getShipByID(this.id);
+		stats = shipStats.getJSONObject(id);;
 		name = stats.getString("english_name");
 		importStats();
 		importStrengthen();
@@ -109,15 +112,11 @@ public class ShipStats extends ShipData{
 	 */
 	private void checkRetro() {
 		try {
-			shipTrans = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\ship_data_trans.json")));
 			//looks for matching groupID
 			if(shipTrans.has(groupID)) {
-				transData = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\transform_data_template.json")));
 				getRetroList();
 			}
 		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
@@ -308,7 +307,6 @@ public class ShipStats extends ShipData{
 	 */
 	private void importStrengthen() {
 		try {
-			JSONObject str = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\ship_data_strengthen.json")));
 			JSONArray a = str.getJSONObject(groupID).getJSONArray("durability");
 			fpStr = a.getInt(0);
 			trpStr = a.getInt(1);
@@ -454,8 +452,8 @@ public class ShipStats extends ShipData{
 	public int getEff4() {
 		return eff4;
 	}
-	public void setRetroTrue() {
-		checkRetro = true;
+	public void setRetroTrue(boolean flag) {
+		checkRetro = flag;
 	}
 	public void printStats(int level, int aff) {
 		System.out.println(name + " | " + id);

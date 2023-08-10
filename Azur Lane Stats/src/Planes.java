@@ -15,7 +15,7 @@ public class Planes{
 		weaponIDs = id;
 		planeCount = planes;
 		getWeapons();
-		printWeapons();
+		
 	}
 	
 	private void getWeapons(){
@@ -38,7 +38,7 @@ public class Planes{
 			return false;
 	}
 	
-	private void printWeapons(){
+	public void printWeapons(){
 		System.out.println("----------------------------------------------------");
 		System.out.print("AA guns: ");
 		if(AAGuns.isEmpty()) {

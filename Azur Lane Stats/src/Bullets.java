@@ -7,7 +7,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 public class Bullets {
-	int bulletID,barrageID,buffID;
+	int bulletID,barrageID,buffID,rant;
 	int bulletCount;
 	double light,medium,heavy;
 	String ammoType;
@@ -17,7 +17,7 @@ public class Bullets {
 	int pierce;
 	int range;
 	int velocity;
-	JSONObject bulletStats;
+	JSONObject bulletStats = JsonData.bulletStats;
 	int antisub;
 	boolean ignoreShield;
 	boolean shrapnel = false;
@@ -25,7 +25,6 @@ public class Bullets {
 	public Bullets(int bulletid) {
 		bulletID = bulletid;
 		bulletCount = 0;
-		importFiles();
 		getBulletStats();
 	}
 	
@@ -44,16 +43,6 @@ public class Bullets {
 		System.out.println("Velocity: " + velocity);
 		if(antisub !=0) {
 			System.out.println("antisub: " + antisub);
-		}
-	}
-	
-	private void importFiles() {
-		try {
-			bulletStats = new JSONObject(new JSONTokener(new FileReader(System.getProperty("user.dir")+"\\src\\bullet_template.json")));
-		} catch (JSONException e) {
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -105,9 +94,9 @@ public class Bullets {
 	
 	private void checkBuff(JSONArray buff) {
 		if(!buff.isEmpty()) {
-			buffID = buff.getJSONObject(0).getInt("buff_id");
-		}else
-			buffID = 0;
+			buffID = buff.getJSONObject(0).optInt("buff_id", 0);
+			rant = buff.getJSONObject(0).optInt("rant", 0);
+		}
 	}
 	
 	

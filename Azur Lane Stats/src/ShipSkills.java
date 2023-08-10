@@ -13,36 +13,16 @@ public class ShipSkills{
 	String id;
 	JSONArray skillList;
 	HashMap<String,LinkedList<String>> skillMap = new HashMap<String,LinkedList<String>>();
-	JSONObject buff, skill;
+	JSONObject buff = JsonData.buffCfg;
+	JSONObject skill = JsonData.skillCfg;
 	LinkedList<String> weaponList = new LinkedList<>();
 	String dir = System.getProperty("user.dir");
-	JSONObject shipTemplate;
+	JSONObject shipTemplate = JsonData.shipTemplate;
 
 	public ShipSkills(String id) {
 		this.id = id;
-		try {
-			shipTemplate = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\ship_data_template.json")));
-		}catch(Exception e) {
-			e.printStackTrace();
-		}
-		importJSON();
 		skillList();
-		mapSkills();
-		printMap();
-		System.out.println("WeaponIDs: " +weaponList.toString());
-	}
-
-	public void importJSON(){
-		try {
-			buff = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\buffCfg.json")));
-			skill = new JSONObject(new JSONTokener(new FileReader(dir+"\\src\\skillCfg.json")));
-		} catch (JSONException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		new Abilities(skillList);
 	}
 
 	private void skillList() {
@@ -177,6 +157,7 @@ public class ShipSkills{
 	}
 	
 	/**
+	 * Deprecated
 	 * Starts with skillList and traverses through HashMap printing each key -> value
 	 */
 	private void printMap() {
